@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>REDE IoT – Rio Jaguareguava</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+<link rel="stylesheet" href="style.css">
+<body>
+
+<!-- UPLOAD SCREEN -->
+<div id="uploadScreen">
+  <div class="up-logo">UNIFESP · Baixada Santista · 2026</div>
+  <h2>REDE IoT — Rio Jaguareguava</h2>
+  <p>Selecione o arquivo <strong>dados_simulados_jaguareguava.csv</strong> para iniciar o monitoramento.</p>
+  <label class="upload-box" for="fileInput">
+    <div class="icon">📂</div>
+    <input type="file" id="fileInput" accept=".csv">
+    <span>Selecionar CSV</span>
+  </label>
+  <div class="hint">
+    Ou rode localmente:<br>
+    <code>python -m http.server 8000</code> → <code>http://localhost:8000</code>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app" style="display:none">
+  <header>
+    <div class="header-title">
+      <strong>Rio Jaguareguava</strong>
+      <span>Usos e Pressões em Sistemas Socioecológicos Marinhos · Protótipo Preditivo IoT · UNIFESP 2026</span>
+    </div>
+  </header>
+
+  <!-- STATION TABS -->
+  <div class="station-bar">
+    <button class="station-tab active" data-st="P1">
+      <span class="st-badge">P1</span>
+      Estação Confluência Itapanhaú
+    </button>
+    <button class="station-tab" data-st="P2">
+      <span class="st-badge">P2</span>
+      Estação Interferência Antrópica
+    </button>
+    <button class="station-tab" data-st="P3">
+      <span class="st-badge">P3</span>
+      Estação Referência Natural
+    </button>
+  </div>
+  <div class="station-desc" id="stationDesc">
+    <span class="tag tag-confluencia">Confluência</span>
+    Ponto de encontro com o Rio Itapanhaú · monitoramento da cunha salina e dinâmica estuarina
+  </div>
+
+  <div class="legend-bar">
+    <span class="leg"><span class="leg-line" style="background:var(--obs)"></span>Observado</span>
+    <span class="leg"><span class="leg-line" style="background:var(--prev); opacity:.7; border-top: 2px dashed var(--prev)"></span>Previsto</span>
+    <span id="tsRange"></span>
+  </div>
+
+  <div class="kpi-row" id="kpiRow">
+    <div class="kpi active-p1"><label>Vazão</label><div class="val" id="k-vazao">–</div><div class="unit">m³/s</div></div>
+    <div class="kpi active-p1"><label>Salinidade</label><div class="val" id="k-sal">–</div><div class="unit">PSU</div></div>
+    <div class="kpi active-p1"><label>Nível</label><div class="val" id="k-nivel">–</div><div class="unit">m</div></div>
+    <div class="kpi active-p1"><label>OD</label><div class="val" id="k-od">–</div><div class="unit">mg/L</div></div>
+    <div class="kpi active-p1"><label>Temperatura</label><div class="val" id="k-temp">–</div><div class="unit">°C</div></div>
+  </div>
+
+  <div class="controls">
+    <label>Variável:</label>
+    <select id="varSel">
+      <option value="all">Todos os gráficos</option>
+      <option value="vazao">Vazão</option>
+      <option value="sal">Salinidade</option>
+      <option value="nivel">Nível</option>
+      <option value="od">OD</option>
+      <option value="temp">Temperatura</option>
+    </select>
+    <label>Janela:</label>
+    <input type="range" id="winRange" min="24" max="265" step="24" value="120">
+    <span id="rangeVal">120 h</span>
+  </div>
+
+  <div class="charts-grid">
+    <div class="chart-card" id="c-vazao"><h3><span class="param-dot" style="background:#f5c842"></span>Vazão (m³/s)</h3><canvas id="ch-vazao"></canvas></div>
+    <div class="chart-card" id="c-sal"><h3><span class="param-dot" style="background:#a78bfa"></span>Salinidade (PSU)</h3><canvas id="ch-sal"></canvas></div>
+    <div class="chart-card" id="c-nivel"><h3><span class="param-dot" style="background:#a78bfa"></span>Nível (m)</h3><canvas id="ch-nivel"></canvas></div>
+    <div class="chart-card" id="c-od"><h3><span class="param-dot" style="background:#3ecf8e"></span>OD (mg/L)</h3><canvas id="ch-od"></canvas></div>
+    <div class="chart-card" id="c-temp"><h3><span class="param-dot" style="background:#f0855a"></span>Temperatura (°C)</h3><canvas id="ch-temp"></canvas></div>
+  </div>
+</div>
+
+<script src="js/app.js"></script>
+</html>
