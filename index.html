@@ -733,28 +733,43 @@ function beep(freq, duration, type = 'sine', volume = 0.3) {
   osc.stop(ctx.currentTime + duration);
 }
 
+let soundLoopTimer = null;
+
+function stopSound() {
+  if (soundLoopTimer) { clearInterval(soundLoopTimer); soundLoopTimer = null; }
+}
+
 function playAlertSound(cenario) {
-  if (cenario === 'atencao') {
-    beep(660, 0.18, 'sine', 0.25);
-    setTimeout(() => beep(660, 0.18, 'sine', 0.25), 280);
+  stopSound();
+  const intervals = { atencao: 1800, alerta: 1400, emergencia: 1800 };
+  const interval = intervals[cenario];
+  if (!interval) return;
 
-  } else if (cenario === 'alerta') {
-    beep(880, 0.2, 'square', 0.18);
-    setTimeout(() => beep(740, 0.2, 'square', 0.18), 280);
-    setTimeout(() => beep(660, 0.3, 'square', 0.18), 560);
-
-  } else if (cenario === 'emergencia') {
-    let delay = 0;
-    for (let i = 0; i < 6; i++) {
-      const f = i % 2 === 0 ? 960 : 640;
-      setTimeout(() => beep(f, 0.22, 'sawtooth', 0.22), delay);
-      delay += 240;
+  const play = () => {
+    if (cenario === 'atencao') {
+      beep(660, 0.18, 'sine', 0.25);
+      setTimeout(() => beep(660, 0.18, 'sine', 0.25), 280);
+    } else if (cenario === 'alerta') {
+      beep(880, 0.2, 'square', 0.18);
+      setTimeout(() => beep(740, 0.2, 'square', 0.18), 280);
+      setTimeout(() => beep(660, 0.3, 'square', 0.18), 560);
+    } else if (cenario === 'emergencia') {
+      let delay = 0;
+      for (let i = 0; i < 6; i++) {
+        const f = i % 2 === 0 ? 960 : 640;
+        setTimeout(() => beep(f, 0.22, 'sawtooth', 0.22), delay);
+        delay += 240;
+      }
     }
-  }
+  };
+
+  play();
+  soundLoopTimer = setInterval(play, interval);
 }
 
 function dismissAlert() {
   document.getElementById('alertOverlay').classList.remove('visible');
+  stopSound();
 }
 
 function showAlertOverlay(cenario) {
@@ -834,6 +849,7 @@ function simular(cenario) {
   if (!DADOS_ORIGINAIS) DADOS_ORIGINAIS = JSON.parse(JSON.stringify(ALL_DATA));
 
   if (countdownTimer) { clearInterval(countdownTimer); countdownTimer = null; }
+  stopSound();
   document.getElementById('sim-countdown').classList.remove('visible');
   dismissAlert();
 
