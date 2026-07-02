@@ -1050,8 +1050,7 @@ DADOS_ORIGINAIS = JSON.parse(JSON.stringify(DADOS));
 render(120);
 
 // --- Indicador de acessos simultâneos ---
-// o número não reflete visitantes reais: é uma simulação com variação suave,
-// pensada para dar a sensação de painel "vivo"
+// o número não reflete visitantes reais: é uma simulação com variação
 (function () {
   const el = document.getElementById('viewersCount');
   if (!el) return;
