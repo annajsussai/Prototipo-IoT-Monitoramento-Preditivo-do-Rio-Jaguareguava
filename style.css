@@ -183,7 +183,7 @@
   input[type=range] { accent-color: #4fa8e8; cursor: pointer; }
   #rangeVal { color: var(--text); font-weight: 600; font-size: .78rem; min-width: 44px; font-family: var(--mono); }
   .charts-grid {
-    display: grid; grid-template-columns: 1fr;
+    display: grid; grid-template-columns: 1fr 1fr;
     gap: 10px; padding: 0 24px 24px; background: var(--bg);
   }
   .chart-card {
@@ -201,6 +201,7 @@
     font-family: var(--mono); display: flex; align-items: center; gap: 7px;
   }
   .param-dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; }
+  #c-temp { grid-column: span 2; }
 
   .color-legend {
     display: flex; gap: 18px; flex-wrap: wrap; align-items: center;
@@ -287,6 +288,7 @@
 
   @media(max-width:700px) {
     .charts-grid { grid-template-columns: 1fr; }
+    #c-temp { grid-column: span 1; }
     .station-tab { padding: 0 12px; font-size: .72rem; }
   }
 
