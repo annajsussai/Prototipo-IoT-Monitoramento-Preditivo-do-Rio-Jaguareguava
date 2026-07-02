@@ -358,13 +358,13 @@
   .rotate-overlay {
     display: none;
     position: fixed; inset: 0; z-index: 1200;
-    background: #06080ce6;
+    background: #06080cf5;
     backdrop-filter: blur(3px);
     flex-direction: column; align-items: center; justify-content: center;
-    gap: 18px; text-align: center; padding: 24px;
+    gap: 22px; text-align: center; padding: 24px;
   }
   .rotate-icon {
-    font-size: 2.6rem;
+    font-size: 4.4rem;
     animation: rotate-hint 1.8s ease-in-out infinite;
   }
   @keyframes rotate-hint {
@@ -372,20 +372,13 @@
     50%      { transform: rotate(-90deg); }
   }
   .rotate-title {
-    font-family: var(--sans); font-size: 1.05rem; font-weight: 600;
+    font-family: var(--sans); font-size: 1.5rem; font-weight: 700;
     letter-spacing: .01em; color: var(--text);
   }
   .rotate-sub {
-    font-family: var(--sans); font-weight: 300; font-size: .8rem; color: var(--muted);
-    max-width: 260px; line-height: 1.6;
+    font-family: var(--sans); font-weight: 400; font-size: 1.05rem; color: var(--muted);
+    max-width: 320px; line-height: 1.7;
   }
-  .rotate-dismiss {
-    margin-top: 4px; background: transparent;
-    border: 1px solid var(--border-hi); color: var(--muted);
-    font-family: var(--mono); font-size: .68rem; letter-spacing: .05em;
-    padding: 6px 16px; border-radius: 4px; cursor: pointer;
-  }
-  .rotate-dismiss:hover { color: var(--text); border-color: var(--muted); }
   @media (orientation: portrait) and (max-width: 900px) {
-    .rotate-overlay:not(.dismissed) { display: flex; }
+    .rotate-overlay { display: flex; }
   }
