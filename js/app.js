@@ -515,5 +515,5 @@ render(120);
     const delta = Math.floor(Math.random() * 3) - 1; 
     count = Math.max(2, Math.min(24, count + delta));
     el.textContent = count;
-  }, 4000);
+  }, 4000); 
 })();
