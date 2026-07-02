@@ -134,6 +134,7 @@
   .nivel-normal   { background: #22c55e18; color: var(--alerta-verde);    border: 1px solid #22c55e30; }
   .nivel-atencao  { background: #eab30818; color: var(--alerta-amarelo);  border: 1px solid #eab30830; }
   .nivel-alerta   { background: #ef444418; color: var(--alerta-vermelho); border: 1px solid #ef444430; }
+  .nivel-alerta-laranja { background: #f9731618; color: #f97316; border: 1px solid #f9731630; }
   .alerta-item { display: flex; align-items: center; gap: 6px; }
   .alerta-dot { width: 6px; height: 6px; border-radius: 50%; }
   #tsRange { margin-left: auto; color: var(--muted2); font-size: .66rem; }
@@ -210,7 +211,15 @@
     font-family: var(--mono); display: flex; align-items: center; gap: 7px;
   }
   .param-dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; }
-  #c-temp { grid-column: span 2; }
+  #c-nivel { grid-column: span 2; }
+  .charts-row-centered {
+    grid-column: span 2;
+    display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;
+  }
+  .charts-row-centered .chart-card {
+    flex: 1 1 calc(50% - 5px); max-width: 480px; min-width: 260px;
+  }
+  #c-temp { grid-column: unset; }
   .color-legend {
     display: flex; gap: 18px; flex-wrap: wrap; align-items: center;
     padding: 8px 24px 4px; background: var(--bg);
@@ -297,7 +306,10 @@
   @media(max-width:700px) {
     .kpi-row { grid-template-columns: repeat(2,1fr); }
     .charts-grid { grid-template-columns: 1fr; }
+    #c-nivel { grid-column: span 1; }
     #c-temp { grid-column: span 1; }
+    .charts-row-centered { flex-direction: column; }
+    .charts-row-centered .chart-card { max-width: 100%; flex-basis: auto; }
     .station-tab { padding: 0 12px; font-size: .72rem; }
   }
 
@@ -361,6 +373,8 @@
       width: 100%; grid-column: unset;
       padding: 10px 12px 8px;
     }
+    .charts-row-centered { width: 100%; }
+    .charts-row-centered .chart-card { max-width: none; }
     .chart-card h3 { font-size: .6rem; margin-bottom: 8px; }
     .charts-grid { padding-bottom: 28px; }
 
@@ -558,8 +572,10 @@
   <div class="chart-card cc-vazao" id="c-vazao"><h3><span class="param-dot" style="background:var(--c-vazao)"></span>Vazão (m³/s)</h3><canvas id="ch-vazao"></canvas></div>
   <div class="chart-card cc-sal"   id="c-sal">  <h3><span class="param-dot" style="background:var(--c-sal)"></span>Salinidade (PSU)</h3><canvas id="ch-sal"></canvas></div>
   <div class="chart-card cc-nivel" id="c-nivel"><h3><span class="param-dot" style="background:var(--c-nivel)"></span>Nível (m)</h3><canvas id="ch-nivel"></canvas></div>
-  <div class="chart-card cc-od"    id="c-od">  <h3><span class="param-dot" style="background:var(--c-od)"></span>OD (mg/L)</h3><canvas id="ch-od"></canvas></div>
-  <div class="chart-card cc-temp"  id="c-temp"><h3><span class="param-dot" style="background:var(--c-temp)"></span>Temperatura (°C)</h3><canvas id="ch-temp"></canvas></div>
+  <div class="charts-row-centered">
+    <div class="chart-card cc-od"    id="c-od">  <h3><span class="param-dot" style="background:var(--c-od)"></span>OD (mg/L)</h3><canvas id="ch-od"></canvas></div>
+    <div class="chart-card cc-temp"  id="c-temp"><h3><span class="param-dot" style="background:var(--c-temp)"></span>Temperatura (°C)</h3><canvas id="ch-temp"></canvas></div>
+  </div>
 </div>
 
 <script>
@@ -610,8 +626,8 @@ const STATIONS = {
 };
 
 const LIMITES = {
-  od_mgL:    { atencao: 5.0, critico: 3.0 },
-  vazao_m3s: { atencao: 1.5, critico: 0.8 },
+  od_mgL:    { atencao: 5.0, alerta: 4.0, critico: 3.0 },
+  vazao_m3s: { atencao: 1.5, alerta: 1.0, critico: 0.8 },
 };
 
 const PRED_H = 12, FIT_WIN = 48;
@@ -753,8 +769,11 @@ function updateAlerts(stRows) {
   if (od < LIMITES.od_mgL.critico) {
     status = 'emergencia';
     document.getElementById('alert-od').style.display = 'flex';
+  } else if (od < LIMITES.od_mgL.alerta || vazao < LIMITES.vazao_m3s.alerta) {
+    status = 'alerta';
+    if (vazao < LIMITES.vazao_m3s.alerta) document.getElementById('alert-vazao').style.display = 'flex';
   } else if (od < LIMITES.od_mgL.atencao || vazao < LIMITES.vazao_m3s.atencao) {
-    if (status !== 'emergencia') status = 'atencao';
+    status = 'atencao';
     if (vazao < LIMITES.vazao_m3s.atencao) document.getElementById('alert-vazao').style.display = 'flex';
   }
 
@@ -762,6 +781,7 @@ function updateAlerts(stRows) {
   badge.className = 'nivel-badge';
   if (status === 'normal')     { badge.textContent='Normal';     badge.classList.add('nivel-normal'); }
   if (status === 'atencao')    { badge.textContent='Atenção';    badge.classList.add('nivel-atencao'); }
+  if (status === 'alerta')     { badge.textContent='Alerta';     badge.classList.add('nivel-alerta-laranja'); }
   if (status === 'emergencia') { badge.textContent='Emergência'; badge.classList.add('nivel-alerta'); }
 }
 
@@ -824,11 +844,24 @@ document.getElementById('varSel').addEventListener('change', e=>{
   const v=e.target.value;
   const ids=['c-vazao','c-sal','c-nivel','c-od','c-temp'];
   const map={vazao:'c-vazao',sal:'c-sal',nivel:'c-nivel',od:'c-od',temp:'c-temp'};
+  const wrapper = document.querySelector('.charts-row-centered');
   if (v==='all') {
-    ids.forEach(id=>{ const el=document.getElementById(id); el.style.display='block'; el.style.gridColumn=id==='c-temp'?'span 2':''; });
+    ids.forEach(id=>{
+      const el=document.getElementById(id);
+      el.style.display='block'; el.style.gridColumn=''; el.style.maxWidth='';
+    });
+    wrapper.style.display='flex';
   } else {
     ids.forEach(id=>document.getElementById(id).style.display='none');
-    const el=document.getElementById(map[v]); el.style.display='block'; el.style.gridColumn='span 2';
+    const el=document.getElementById(map[v]);
+    el.style.display='block';
+    if (v==='od' || v==='temp') {
+      wrapper.style.display='flex';
+      el.style.maxWidth='100%';
+    } else {
+      wrapper.style.display='none';
+      el.style.gridColumn='span 2';
+    }
   }
   render(+document.getElementById('winRange').value);
 });
@@ -1051,7 +1084,7 @@ ALL_DATA = DADOS;
 DADOS_ORIGINAIS = JSON.parse(JSON.stringify(DADOS));
 render(120);
 
-// Indicador de acessos simultâneos
+// Indicador de acessos simultâneos 
 // o número não reflete visitantes reais: é uma simulação com variação
 (function () {
   const el = document.getElementById('viewersCount');
