@@ -303,68 +303,74 @@
 
   /* ===== Celular na horizontal ===== */
   @media (orientation: landscape) and (max-height: 520px) {
+    body { overflow-y: auto; -webkit-overflow-scrolling: touch; }
+
     .demo-banner {
-      padding: 3px 12px; font-size: .58rem; gap: 8px;
+      padding: 4px 14px; font-size: .6rem; gap: 8px;
     }
 
     header {
-      height: 36px; padding: 0 12px; gap: 10px;
+      height: 40px; padding: 0 14px; gap: 10px;
     }
-    .header-title strong { font-size: .7rem; }
-    .header-title span   { display: none; } 
+    .header-title strong { font-size: .74rem; }
+    .header-title span   { display: none; }
     .live-label { display: none; }
 
     .station-bar {
-      padding: 0 12px; overflow-x: auto; -webkit-overflow-scrolling: touch;
+      padding: 0 14px; overflow-x: auto; -webkit-overflow-scrolling: touch;
     }
-    .station-tab { height: 30px; padding: 0 10px; font-size: .66rem; gap: 6px; }
+    .station-tab { height: 32px; padding: 0 12px; font-size: .68rem; gap: 6px; }
 
     .station-desc { display: none; }
 
     .sim-bar {
-      padding: 4px 12px 5px; gap: 6px; font-size: .6rem;
+      padding: 5px 14px 6px; gap: 6px; font-size: .62rem;
       overflow-x: auto; -webkit-overflow-scrolling: touch; flex-wrap: nowrap;
     }
-    .sim-btn { padding: 3px 9px; font-size: .6rem; }
+    .sim-btn { padding: 4px 10px; font-size: .62rem; }
     .sim-label { display: none; }
 
-    .alerta-bar { padding: 4px 12px; font-size: .62rem; gap: 6px; }
+    .alerta-bar { padding: 5px 14px; font-size: .64rem; gap: 8px; }
 
-    .legend-bar { display: none; } 
+    .legend-bar { display: none; }
 
-    .color-legend { padding: 4px 12px 3px; gap: 10px; font-size: .6rem; }
+    .color-legend { padding: 5px 14px 4px; gap: 10px; font-size: .62rem; }
 
     .kpi-row {
-      display: flex; overflow-x: auto; -webkit-overflow-scrolling: touch;
-      gap: 8px; padding: 8px 12px; scroll-snap-type: x proximity;
+      display: grid; grid-template-columns: repeat(5, 1fr);
+      gap: 8px; padding: 10px 14px;
     }
-    .kpi {
-      flex: 0 0 auto; width: 118px; padding: 8px 10px; scroll-snap-align: start;
-    }
-    .kpi label { font-size: .56rem; }
+    .kpi { padding: 8px 9px; }
+    .kpi label { font-size: .54rem; gap: 3px; }
+    .kpi label .kpi-icon { font-size: .68rem; }
     .kpi .val  { font-size: 1.05rem; margin: 4px 0 1px; }
-    .kpi .unit { font-size: .58rem; }
-    .kpi .trend{ font-size: .56rem; }
+    .kpi .unit { font-size: .56rem; }
+    .kpi .trend{ font-size: .54rem; }
 
-    .controls { padding: 4px 12px 6px; gap: 10px; }
+    .controls { padding: 6px 14px 8px; gap: 10px; }
     .controls label { font-size: .68rem; }
     #rangeVal { font-size: .7rem; }
 
+    /* Gráficos empilhados, um embaixo do outro, com rolagem vertical da página */
     .charts-grid {
-      display: flex; grid-template-columns: none;
-      overflow-x: auto; -webkit-overflow-scrolling: touch;
-      gap: 10px; padding: 0 12px 14px;
-      scroll-snap-type: x mandatory;
+      display: flex; flex-direction: column;
+      grid-template-columns: none;
+      gap: 10px; padding: 0 14px 16px;
     }
     .chart-card, #c-temp {
-      flex: 0 0 82vw; width: 82vw; grid-column: unset;
-      padding: 10px 12px 8px; scroll-snap-align: start;
+      width: 100%; grid-column: unset;
+      padding: 10px 12px 8px;
     }
-    .chart-card h3 { font-size: .58rem; margin-bottom: 6px; }
+    .chart-card h3 { font-size: .6rem; margin-bottom: 8px; }
+    .charts-grid { padding-bottom: 28px; }
 
     .alert-box { padding: 22px 28px; }
     .alert-box .ao-title { font-size: 1.1rem; }
     .alert-box .ao-sub { font-size: .7rem; max-width: 260px; }
+  }
+
+  @media (orientation: landscape) and (max-height: 420px) {
+    .kpi-row { grid-template-columns: repeat(3, 1fr); }
   }
 
   /* ===== Aviso "gire o celular" ===== */
@@ -395,15 +401,8 @@
     font-family: var(--sans); font-weight: 300; font-size: .8rem; color: var(--muted);
     max-width: 260px; line-height: 1.6;
   }
-  .rotate-dismiss {
-    margin-top: 4px; background: transparent;
-    border: 1px solid var(--border-hi); color: var(--muted);
-    font-family: var(--mono); font-size: .68rem; letter-spacing: .05em;
-    padding: 6px 16px; border-radius: 4px; cursor: pointer;
-  }
-  .rotate-dismiss:hover { color: var(--text); border-color: var(--muted); }
   @media (orientation: portrait) and (max-width: 900px) {
-    .rotate-overlay:not(.dismissed) { display: flex; }
+    .rotate-overlay { display: flex; }
   }
 </style>
 </head>
@@ -414,7 +413,6 @@
   <div class="rotate-icon">📱</div>
   <div class="rotate-title">GIRE SEU DISPOSITIVO</div>
   <div class="rotate-sub">Este painel foi desenhado para tela horizontal. Deite o aparelho para ver os gráficos e indicadores por completo.</div>
-  <button class="rotate-dismiss" onclick="document.getElementById('rotateOverlay').classList.add('dismissed')">Continuar mesmo assim</button>
 </div>
 
 <!-- ALERT OVERLAY -->
@@ -706,7 +704,7 @@ function makeChart(canvasId, rows, field, yLabel) {
     },
     options:{
       responsive:true, maintainAspectRatio:true,
-      aspectRatio: isCompactLandscape() ? (canvasId==='ch-temp'?6:3.4) : (canvasId==='ch-temp'?4:2.2),
+      aspectRatio: isCompactLandscape() ? (canvasId==='ch-temp'?4.2:3) : (canvasId==='ch-temp'?4:2.2),
       interaction:{mode:'index',intersect:false},
       plugins:{
         legend:{display:false},
@@ -844,29 +842,14 @@ if (landscapeMQ.addEventListener) landscapeMQ.addEventListener('change', onOrien
 else if (landscapeMQ.addListener) landscapeMQ.addListener(onOrientationToggle);
 window.addEventListener('orientationchange', () => setTimeout(onOrientationToggle, 200));
 
-// Reseta o aviso de "gire o celular" ao voltar pra paisagem, pra aparecer de novo se girar outra vez
 const portraitMQ = window.matchMedia('(orientation: portrait) and (max-width: 900px)');
-const resetRotateOverlay = () => {
-  if (!portraitMQ.matches) {
-    const ov = document.getElementById('rotateOverlay');
-    if (ov) ov.classList.remove('dismissed');
-  }
-};
-if (portraitMQ.addEventListener) portraitMQ.addEventListener('change', resetRotateOverlay);
-else if (portraitMQ.addListener) portraitMQ.addListener(resetRotateOverlay);
 
 // Trava o scroll do body enquanto o aviso "gire o celular" estiver visível,
 // evitando que o conteúdo por trás (largo demais para retrato) desalinhe o overlay
 function syncRotateLock() {
-  const ov = document.getElementById('rotateOverlay');
-  if (!ov) return;
-  const visible = portraitMQ.matches && !ov.classList.contains('dismissed');
-  document.body.classList.toggle('rotate-lock', visible);
+  document.body.classList.toggle('rotate-lock', portraitMQ.matches);
 }
 syncRotateLock();
-document.getElementById('rotateOverlay')?.addEventListener('click', (e) => {
-  if (e.target.classList.contains('rotate-dismiss')) setTimeout(syncRotateLock, 0);
-});
 if (portraitMQ.addEventListener) portraitMQ.addEventListener('change', syncRotateLock);
 else if (portraitMQ.addListener) portraitMQ.addListener(syncRotateLock);
 window.addEventListener('orientationchange', () => setTimeout(syncRotateLock, 250));
@@ -1068,7 +1051,8 @@ ALL_DATA = DADOS;
 DADOS_ORIGINAIS = JSON.parse(JSON.stringify(DADOS));
 render(120);
 
-// Indicador de acessos simultâneos simulação com variação
+// Indicador de acessos simultâneos
+// o número não reflete visitantes reais: é uma simulação com variação
 (function () {
   const el = document.getElementById('viewersCount');
   if (!el) return;
