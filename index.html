@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>REDE IoT - Rio Jaguareguava · Exemplo</title>
+<title>REDE IoT – Rio Jaguareguava · Exemplo</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Manrope:wght@300;400;500;600;700&display=swap');
@@ -37,9 +37,7 @@
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  html { overflow-x: hidden; width: 100%; }
-  body { background: var(--bg); color: var(--text); font-family: var(--sans); min-height: 100vh; overflow-x: hidden; width: 100%; position: relative; }
-  body.rotate-lock { overflow: hidden; height: 100vh; height: 100dvh; }
+  body { background: var(--bg); color: var(--text); font-family: var(--sans); min-height: 100vh; }
   .demo-banner {
     background: linear-gradient(90deg, #1a2540 0%, #1e2d4a 100%);
     border-bottom: 1px solid #2a3a5a;
@@ -133,8 +131,8 @@
   }
   .nivel-normal   { background: #22c55e18; color: var(--alerta-verde);    border: 1px solid #22c55e30; }
   .nivel-atencao  { background: #eab30818; color: var(--alerta-amarelo);  border: 1px solid #eab30830; }
-  .nivel-alerta   { background: #ef444418; color: var(--alerta-vermelho); border: 1px solid #ef444430; }
-  .nivel-alerta-laranja { background: #f9731618; color: #f97316; border: 1px solid #f9731630; }
+  .nivel-alerta   { background: #f9731618; color: #f97316;                border: 1px solid #f9731630; }
+  .nivel-emergencia { background: #ef444418; color: var(--alerta-vermelho); border: 1px solid #ef444430; }
   .alerta-item { display: flex; align-items: center; gap: 6px; }
   .alerta-dot { width: 6px; height: 6px; border-radius: 50%; }
   #tsRange { margin-left: auto; color: var(--muted2); font-size: .66rem; }
@@ -193,7 +191,7 @@
   input[type=range] { accent-color: #4fa8e8; cursor: pointer; }
   #rangeVal { color: var(--text); font-weight: 600; font-size: .78rem; min-width: 44px; font-family: var(--mono); }
   .charts-grid {
-    display: grid; grid-template-columns: 1fr 1fr;
+    display: grid; grid-template-columns: 1fr;
     gap: 10px; padding: 0 24px 24px; background: var(--bg);
   }
   .chart-card {
@@ -211,15 +209,7 @@
     font-family: var(--mono); display: flex; align-items: center; gap: 7px;
   }
   .param-dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; }
-  #c-nivel { grid-column: span 2; }
-  .charts-row-centered {
-    grid-column: span 2;
-    display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;
-  }
-  .charts-row-centered .chart-card {
-    flex: 1 1 calc(50% - 5px); max-width: 480px; min-width: 260px;
-  }
-  #c-temp { grid-column: unset; }
+
   .color-legend {
     display: flex; gap: 18px; flex-wrap: wrap; align-items: center;
     padding: 8px 24px 4px; background: var(--bg);
@@ -304,100 +294,82 @@
   }
 
   @media(max-width:700px) {
-    .kpi-row { grid-template-columns: repeat(2,1fr); }
     .charts-grid { grid-template-columns: 1fr; }
-    #c-nivel { grid-column: span 1; }
-    #c-temp { grid-column: span 1; }
-    .charts-row-centered { flex-direction: column; }
-    .charts-row-centered .chart-card { max-width: 100%; flex-basis: auto; }
     .station-tab { padding: 0 12px; font-size: .72rem; }
   }
 
-  /* ===== Celular na horizontal ===== */
   @media (orientation: landscape) and (max-height: 520px) {
-    body { overflow-y: auto; -webkit-overflow-scrolling: touch; }
+    html, body { overflow-x: hidden; }
 
     .demo-banner {
-      padding: 4px 14px; font-size: .6rem; gap: 8px;
+      padding: 3px 12px; font-size: .58rem; gap: 8px;
     }
 
     header {
-      height: 40px; padding: 0 14px; gap: 10px;
+      height: 36px; padding: 0 12px; gap: 10px;
     }
-    .header-title strong { font-size: .74rem; }
-    .header-title span   { display: none; }
+    .header-title strong { font-size: .7rem; }
+    .header-title span   { display: none; } 
     .live-label { display: none; }
 
     .station-bar {
-      padding: 0 14px; overflow-x: auto; -webkit-overflow-scrolling: touch;
+      padding: 0 12px; overflow-x: auto; -webkit-overflow-scrolling: touch;
     }
-    .station-tab { height: 32px; padding: 0 12px; font-size: .68rem; gap: 6px; }
+    .station-tab { height: 30px; padding: 0 10px; font-size: .66rem; gap: 6px; }
 
     .station-desc { display: none; }
 
     .sim-bar {
-      padding: 5px 14px 6px; gap: 6px; font-size: .62rem;
+      padding: 4px 12px 5px; gap: 6px; font-size: .6rem;
       overflow-x: auto; -webkit-overflow-scrolling: touch; flex-wrap: nowrap;
     }
-    .sim-btn { padding: 4px 10px; font-size: .62rem; }
+    .sim-btn { padding: 3px 9px; font-size: .6rem; }
     .sim-label { display: none; }
 
-    .alerta-bar { padding: 5px 14px; font-size: .64rem; gap: 8px; }
+    .alerta-bar { padding: 4px 12px; font-size: .62rem; gap: 6px; }
 
-    .legend-bar { display: none; }
+    .legend-bar { display: none; } 
 
-    .color-legend { padding: 5px 14px 4px; gap: 10px; font-size: .62rem; }
+    .color-legend { padding: 4px 12px 3px; gap: 10px; font-size: .6rem; }
 
     .kpi-row {
-      display: grid; grid-template-columns: repeat(5, 1fr);
-      gap: 8px; padding: 10px 14px;
+      display: flex; flex-wrap: wrap; justify-content: center;
+      gap: 8px; padding: 8px 12px;
     }
-    .kpi { padding: 8px 9px; }
-    .kpi label { font-size: .54rem; gap: 3px; }
-    .kpi label .kpi-icon { font-size: .68rem; }
+    .kpi {
+      flex: 0 0 auto; width: 118px; padding: 8px 10px;
+    }
+    .kpi label { font-size: .56rem; }
     .kpi .val  { font-size: 1.05rem; margin: 4px 0 1px; }
-    .kpi .unit { font-size: .56rem; }
-    .kpi .trend{ font-size: .54rem; }
+    .kpi .unit { font-size: .58rem; }
+    .kpi .trend{ font-size: .56rem; }
 
-    .controls { padding: 6px 14px 8px; gap: 10px; }
+    .controls { padding: 4px 12px 6px; gap: 10px; }
     .controls label { font-size: .68rem; }
     #rangeVal { font-size: .7rem; }
 
-    /* Gráficos empilhados, um embaixo do outro, com rolagem vertical da página */
     .charts-grid {
       display: flex; flex-direction: column;
-      grid-template-columns: none;
-      gap: 10px; padding: 0 14px 16px;
+      gap: 10px; padding: 0 12px 14px;
     }
-    .chart-card, #c-temp {
+    .chart-card {
       width: 100%; grid-column: unset;
       padding: 10px 12px 8px;
     }
-    .charts-row-centered { width: 100%; }
-    .charts-row-centered .chart-card { max-width: none; }
-    .chart-card h3 { font-size: .6rem; margin-bottom: 8px; }
-    .charts-grid { padding-bottom: 28px; }
+    .chart-card h3 { font-size: .58rem; margin-bottom: 6px; }
 
     .alert-box { padding: 22px 28px; }
     .alert-box .ao-title { font-size: 1.1rem; }
     .alert-box .ao-sub { font-size: .7rem; max-width: 260px; }
   }
 
-  @media (orientation: landscape) and (max-height: 420px) {
-    .kpi-row { grid-template-columns: repeat(3, 1fr); }
-  }
-
-  /* ===== Aviso "gire o celular" ===== */
   .rotate-overlay {
     display: none;
-    position: fixed; top: 0; left: 0;
-    width: 100vw; height: 100vh; height: 100dvh;
-    z-index: 1200;
+    position: fixed; inset: 0; z-index: 1200;
     background: #06080ce6;
     backdrop-filter: blur(3px);
     flex-direction: column; align-items: center; justify-content: center;
     gap: 18px; text-align: center; padding: 24px;
-    box-sizing: border-box;
   }
   .rotate-icon {
     font-size: 2.6rem;
@@ -415,21 +387,27 @@
     font-family: var(--sans); font-weight: 300; font-size: .8rem; color: var(--muted);
     max-width: 260px; line-height: 1.6;
   }
+  .rotate-dismiss {
+    margin-top: 4px; background: transparent;
+    border: 1px solid var(--border-hi); color: var(--muted);
+    font-family: var(--mono); font-size: .68rem; letter-spacing: .05em;
+    padding: 6px 16px; border-radius: 4px; cursor: pointer;
+  }
+  .rotate-dismiss:hover { color: var(--text); border-color: var(--muted); }
   @media (orientation: portrait) and (max-width: 900px) {
-    .rotate-overlay { display: flex; }
+    .rotate-overlay:not(.dismissed) { display: flex; }
   }
 </style>
 </head>
 <body>
 
-<!-- AVISO GIRAR O CELULAR -->
 <div class="rotate-overlay" id="rotateOverlay">
   <div class="rotate-icon">📱</div>
   <div class="rotate-title">GIRE SEU DISPOSITIVO</div>
   <div class="rotate-sub">Este painel foi desenhado para tela horizontal. Deite o aparelho para ver os gráficos e indicadores por completo.</div>
+  <button class="rotate-dismiss" onclick="document.getElementById('rotateOverlay').classList.add('dismissed')">Continuar mesmo assim</button>
 </div>
 
-<!-- ALERT OVERLAY -->
 <div class="alert-overlay" id="alertOverlay">
   <div class="alert-box">
     <div class="ao-icon" id="ao-icon"></div>
@@ -497,8 +475,8 @@
     <span style="color:var(--alerta-vermelho); font-size:.68rem">OD abaixo do limite crítico</span>
   </span>
   <span class="alerta-item" id="alert-vazao" style="display:none">
-    <span class="alerta-dot" style="background:var(--alerta-amarelo)"></span>
-    <span style="color:var(--alerta-amarelo); font-size:.68rem">Vazão em atenção</span>
+    <span class="alerta-dot" id="alert-vazao-dot" style="background:var(--alerta-amarelo)"></span>
+    <span id="alert-vazao-text" style="color:var(--alerta-amarelo); font-size:.68rem">Vazão em atenção</span>
   </span>
   <span id="tsRange"></span>
 </div>
@@ -572,10 +550,8 @@
   <div class="chart-card cc-vazao" id="c-vazao"><h3><span class="param-dot" style="background:var(--c-vazao)"></span>Vazão (m³/s)</h3><canvas id="ch-vazao"></canvas></div>
   <div class="chart-card cc-sal"   id="c-sal">  <h3><span class="param-dot" style="background:var(--c-sal)"></span>Salinidade (PSU)</h3><canvas id="ch-sal"></canvas></div>
   <div class="chart-card cc-nivel" id="c-nivel"><h3><span class="param-dot" style="background:var(--c-nivel)"></span>Nível (m)</h3><canvas id="ch-nivel"></canvas></div>
-  <div class="charts-row-centered">
-    <div class="chart-card cc-od"    id="c-od">  <h3><span class="param-dot" style="background:var(--c-od)"></span>OD (mg/L)</h3><canvas id="ch-od"></canvas></div>
-    <div class="chart-card cc-temp"  id="c-temp"><h3><span class="param-dot" style="background:var(--c-temp)"></span>Temperatura (°C)</h3><canvas id="ch-temp"></canvas></div>
-  </div>
+  <div class="chart-card cc-od"    id="c-od">  <h3><span class="param-dot" style="background:var(--c-od)"></span>OD (mg/L)</h3><canvas id="ch-od"></canvas></div>
+  <div class="chart-card cc-temp"  id="c-temp"><h3><span class="param-dot" style="background:var(--c-temp)"></span>Temperatura (°C)</h3><canvas id="ch-temp"></canvas></div>
 </div>
 
 <script>
@@ -626,7 +602,7 @@ const STATIONS = {
 };
 
 const LIMITES = {
-  od_mgL:    { atencao: 5.0, alerta: 4.0, critico: 3.0 },
+  od_mgL:    { atencao: 5.0, alerta: 4.3, critico: 3.0 },
   vazao_m3s: { atencao: 1.5, alerta: 1.0, critico: 0.8 },
 };
 
@@ -720,7 +696,7 @@ function makeChart(canvasId, rows, field, yLabel) {
     },
     options:{
       responsive:true, maintainAspectRatio:true,
-      aspectRatio: isCompactLandscape() ? (canvasId==='ch-temp'?4.2:3) : (canvasId==='ch-temp'?4:2.2),
+      aspectRatio: isCompactLandscape() ? (canvasId==='ch-temp'?6:3.4) : (canvasId==='ch-temp'?4:2.2),
       interaction:{mode:'index',intersect:false},
       plugins:{
         legend:{display:false},
@@ -766,7 +742,13 @@ function updateAlerts(stRows) {
   document.getElementById('alert-od').style.display    = 'none';
   document.getElementById('alert-vazao').style.display = 'none';
 
-  if (od < LIMITES.od_mgL.critico) {
+  if (cenarioAtivo && CENARIOS[cenarioAtivo]) {
+    status = cenarioAtivo;
+    if (status === 'emergencia') document.getElementById('alert-od').style.display = 'flex';
+    if (status === 'alerta' || status === 'atencao') {
+      if (vazao < LIMITES.vazao_m3s.atencao) document.getElementById('alert-vazao').style.display = 'flex';
+    }
+  } else if (od < LIMITES.od_mgL.critico || vazao < LIMITES.vazao_m3s.critico) {
     status = 'emergencia';
     document.getElementById('alert-od').style.display = 'flex';
   } else if (od < LIMITES.od_mgL.alerta || vazao < LIMITES.vazao_m3s.alerta) {
@@ -781,8 +763,20 @@ function updateAlerts(stRows) {
   badge.className = 'nivel-badge';
   if (status === 'normal')     { badge.textContent='Normal';     badge.classList.add('nivel-normal'); }
   if (status === 'atencao')    { badge.textContent='Atenção';    badge.classList.add('nivel-atencao'); }
-  if (status === 'alerta')     { badge.textContent='Alerta';     badge.classList.add('nivel-alerta-laranja'); }
-  if (status === 'emergencia') { badge.textContent='Emergência'; badge.classList.add('nivel-alerta'); }
+  if (status === 'alerta')     { badge.textContent='Alerta';     badge.classList.add('nivel-alerta'); }
+  if (status === 'emergencia') { badge.textContent='Emergência'; badge.classList.add('nivel-emergencia'); }
+
+  const vazaoDot  = document.getElementById('alert-vazao-dot');
+  const vazaoText = document.getElementById('alert-vazao-text');
+  if (status === 'alerta') {
+    vazaoText.textContent = 'Vazão e nível muito baixos';
+    vazaoDot.style.background  = '#f97316';
+    vazaoText.style.color      = '#f97316';
+  } else {
+    vazaoText.textContent = 'Vazão em atenção';
+    vazaoDot.style.background  = 'var(--alerta-amarelo)';
+    vazaoText.style.color      = 'var(--alerta-amarelo)';
+  }
 }
 
 function render(win) {
@@ -844,24 +838,11 @@ document.getElementById('varSel').addEventListener('change', e=>{
   const v=e.target.value;
   const ids=['c-vazao','c-sal','c-nivel','c-od','c-temp'];
   const map={vazao:'c-vazao',sal:'c-sal',nivel:'c-nivel',od:'c-od',temp:'c-temp'};
-  const wrapper = document.querySelector('.charts-row-centered');
   if (v==='all') {
-    ids.forEach(id=>{
-      const el=document.getElementById(id);
-      el.style.display='block'; el.style.gridColumn=''; el.style.maxWidth='';
-    });
-    wrapper.style.display='flex';
+    ids.forEach(id=>{ const el=document.getElementById(id); el.style.display='block'; el.style.gridColumn=id==='c-nivel'?'span 2':''; });
   } else {
     ids.forEach(id=>document.getElementById(id).style.display='none');
-    const el=document.getElementById(map[v]);
-    el.style.display='block';
-    if (v==='od' || v==='temp') {
-      wrapper.style.display='flex';
-      el.style.maxWidth='100%';
-    } else {
-      wrapper.style.display='none';
-      el.style.gridColumn='span 2';
-    }
+    const el=document.getElementById(map[v]); el.style.display='block'; el.style.gridColumn='span 2';
   }
   render(+document.getElementById('winRange').value);
 });
@@ -876,16 +857,14 @@ else if (landscapeMQ.addListener) landscapeMQ.addListener(onOrientationToggle);
 window.addEventListener('orientationchange', () => setTimeout(onOrientationToggle, 200));
 
 const portraitMQ = window.matchMedia('(orientation: portrait) and (max-width: 900px)');
-
-// Trava o scroll do body enquanto o aviso "gire o celular" estiver visível,
-// evitando que o conteúdo por trás (largo demais para retrato) desalinhe o overlay
-function syncRotateLock() {
-  document.body.classList.toggle('rotate-lock', portraitMQ.matches);
-}
-syncRotateLock();
-if (portraitMQ.addEventListener) portraitMQ.addEventListener('change', syncRotateLock);
-else if (portraitMQ.addListener) portraitMQ.addListener(syncRotateLock);
-window.addEventListener('orientationchange', () => setTimeout(syncRotateLock, 250));
+const resetRotateOverlay = () => {
+  if (!portraitMQ.matches) {
+    const ov = document.getElementById('rotateOverlay');
+    if (ov) ov.classList.remove('dismissed');
+  }
+};
+if (portraitMQ.addEventListener) portraitMQ.addEventListener('change', resetRotateOverlay);
+else if (portraitMQ.addListener) portraitMQ.addListener(resetRotateOverlay);
 
 const ALERT_CFG = {
   atencao:    { title:'ATENÇÃO',    color:'#eab308', sub:'Parâmetros fora do ideal. Vazão e nível reduzidos. Monitore com frequência.' },
@@ -1084,8 +1063,6 @@ ALL_DATA = DADOS;
 DADOS_ORIGINAIS = JSON.parse(JSON.stringify(DADOS));
 render(120);
 
-// Indicador de acessos simultâneos 
-// o número não reflete visitantes reais: é uma simulação com variação
 (function () {
   const el = document.getElementById('viewersCount');
   if (!el) return;
