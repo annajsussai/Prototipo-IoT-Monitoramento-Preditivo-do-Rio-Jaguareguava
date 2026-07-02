@@ -299,16 +299,6 @@ if (landscapeMQ.addEventListener) landscapeMQ.addEventListener('change', onOrien
 else if (landscapeMQ.addListener) landscapeMQ.addListener(onOrientationToggle);
 window.addEventListener('orientationchange', () => setTimeout(onOrientationToggle, 200));
 
-const portraitMQ = window.matchMedia('(orientation: portrait) and (max-width: 900px)');
-const resetRotateOverlay = () => {
-  if (!portraitMQ.matches) {
-    const ov = document.getElementById('rotateOverlay');
-    if (ov) ov.classList.remove('dismissed');
-  }
-};
-if (portraitMQ.addEventListener) portraitMQ.addEventListener('change', resetRotateOverlay);
-else if (portraitMQ.addListener) portraitMQ.addListener(resetRotateOverlay);
-
 const ALERT_CFG = {
   atencao:    { title:'ATENÇÃO',    color:'#eab308', sub:'Parâmetros fora do ideal. Vazão e nível reduzidos. Monitore com frequência.' },
   alerta:     { title:'ALERTA',     color:'#f97316', sub:'Situação crítica! Vazão e nível muito baixos. OD em queda. Ação recomendada.' },
@@ -515,5 +505,5 @@ render(120);
     const delta = Math.floor(Math.random() * 3) - 1; 
     count = Math.max(2, Math.min(24, count + delta));
     el.textContent = count;
-  }, 4000); 
+  }, 4000);
 })();
