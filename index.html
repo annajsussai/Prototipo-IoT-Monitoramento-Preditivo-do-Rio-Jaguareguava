@@ -37,7 +37,9 @@
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: var(--bg); color: var(--text); font-family: var(--sans); min-height: 100vh; }
+  html { overflow-x: hidden; width: 100%; }
+  body { background: var(--bg); color: var(--text); font-family: var(--sans); min-height: 100vh; overflow-x: hidden; width: 100%; position: relative; }
+  body.rotate-lock { overflow: hidden; height: 100vh; height: 100dvh; }
   .demo-banner {
     background: linear-gradient(90deg, #1a2540 0%, #1e2d4a 100%);
     border-bottom: 1px solid #2a3a5a;
@@ -301,8 +303,6 @@
 
   /* ===== Celular na horizontal ===== */
   @media (orientation: landscape) and (max-height: 520px) {
-    html, body { overflow-x: hidden; }
-
     .demo-banner {
       padding: 3px 12px; font-size: .58rem; gap: 8px;
     }
@@ -370,11 +370,14 @@
   /* ===== Aviso "gire o celular" ===== */
   .rotate-overlay {
     display: none;
-    position: fixed; inset: 0; z-index: 1200;
+    position: fixed; top: 0; left: 0;
+    width: 100vw; height: 100vh; height: 100dvh;
+    z-index: 1200;
     background: #06080ce6;
     backdrop-filter: blur(3px);
     flex-direction: column; align-items: center; justify-content: center;
     gap: 18px; text-align: center; padding: 24px;
+    box-sizing: border-box;
   }
   .rotate-icon {
     font-size: 2.6rem;
@@ -851,6 +854,22 @@ const resetRotateOverlay = () => {
 };
 if (portraitMQ.addEventListener) portraitMQ.addEventListener('change', resetRotateOverlay);
 else if (portraitMQ.addListener) portraitMQ.addListener(resetRotateOverlay);
+
+// Trava o scroll do body enquanto o aviso "gire o celular" estiver visível,
+// evitando que o conteúdo por trás (largo demais para retrato) desalinhe o overlay
+function syncRotateLock() {
+  const ov = document.getElementById('rotateOverlay');
+  if (!ov) return;
+  const visible = portraitMQ.matches && !ov.classList.contains('dismissed');
+  document.body.classList.toggle('rotate-lock', visible);
+}
+syncRotateLock();
+document.getElementById('rotateOverlay')?.addEventListener('click', (e) => {
+  if (e.target.classList.contains('rotate-dismiss')) setTimeout(syncRotateLock, 0);
+});
+if (portraitMQ.addEventListener) portraitMQ.addEventListener('change', syncRotateLock);
+else if (portraitMQ.addListener) portraitMQ.addListener(syncRotateLock);
+window.addEventListener('orientationchange', () => setTimeout(syncRotateLock, 250));
 
 const ALERT_CFG = {
   atencao:    { title:'ATENÇÃO',    color:'#eab308', sub:'Parâmetros fora do ideal. Vazão e nível reduzidos. Monitore com frequência.' },
