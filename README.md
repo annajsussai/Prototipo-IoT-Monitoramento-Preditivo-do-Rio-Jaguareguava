@@ -1,8 +1,12 @@
-## 🐱‍💻 Resumo 
+---
+
+## 🐱‍💻 Resumo
 
 Este projeto consiste na **idealização de uma interface digital** proposta no âmbito da disciplina de *Usos e Pressões em Sistemas Socioecológicos Marinhos* da Unifesp. O foco é apresentar uma solução visual para o monitoramento do Rio Jaguareguava, estruturando como um sistema de gestão preditiva poderia ser organizado sob uma ótica socioecológica.
 
 **Acesse a interface aqui:** [Prototipo-IoT-Monitoramento-Preditivo-do-Rio-Jaguareguava](https://annajsussai.github.io/Prototipo-IoT-Monitoramento-Preditivo-do-Rio-Jaguareguava/)
+
+![Demonstração do Protótipo](images/exemplo.gif)
 
 ---
 
